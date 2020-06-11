@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::orderBy('id','desc')->paginate(15);
+        return Product::orderBy('id','desc')->paginate(4);
     }
 
     /**
@@ -117,7 +117,6 @@ class ProductController extends Controller
                 ]);
 
             }else {
-
                 $exploed1 = explode(";", $request->product_image);
                 $exploed2 = explode("/", $exploed1[0]);
                 $filename =  time().'.'.$exploed2[1];

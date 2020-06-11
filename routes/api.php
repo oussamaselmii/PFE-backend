@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/register','App\ApiController@register');
 Route::post('/login','App\ApiController@login');
 Route::apiResource('/category','App\CategoryController');
+Route::apiResource('/subcategory','App\SubcategoryController');
 Route::apiResource('/all-product','App\ProductController');

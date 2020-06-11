@@ -13,14 +13,24 @@ class ApiController extends Controller
     function register(Request $request){
         $request->validate([
             'name'=>'required',
+            'last_name'=>'required',
             'email'=>'required',
             'password'=>'required',
+            'verif_password'=>'required',
+            'genre'=>'required',
+            'role'=>'required',
+            
         ]);
 
         $user =new User;
         $user->name =$request->name;
+        $user->last_name =$request->last_name;
         $user->email =$request->email;
         $user->password =bcrypt($request->password);
+        $user->verif_password =bcrypt($request->verif_password);
+        $user->genre =$request->genre;
+        $user->role =$request->role;
+
         $user->save();
 
         $http = new Client;
