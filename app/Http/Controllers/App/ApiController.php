@@ -4,6 +4,8 @@ namespace App\Http\Controllers\App;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Session;
+
 use App\User;
 use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Hash;
@@ -13,23 +15,20 @@ class ApiController extends Controller
     function register(Request $request){
         $request->validate([
             'name'=>'required',
-            'last_name'=>'required',
             'email'=>'required',
             'password'=>'required',
-            'verif_password'=>'required',
-            'genre'=>'required',
-            'role'=>'required',
+            
+            
             
         ]);
 
         $user =new User;
         $user->name =$request->name;
-        $user->last_name =$request->last_name;
         $user->email =$request->email;
         $user->password =bcrypt($request->password);
-        $user->verif_password =bcrypt($request->verif_password);
-        $user->genre =$request->genre;
-        $user->role =$request->role;
+        
+        
+        
 
         $user->save();
 
@@ -46,6 +45,7 @@ class ApiController extends Controller
             ],
         ]);
 
+
         return json_decode((string) $response->getBody(), true);
 
     }
@@ -56,7 +56,16 @@ class ApiController extends Controller
         ]);
         $user = User::where('email',$request->email)->first();
         if(!$user){
-            return response(['data'=>'User not found']);
+            return response()->json([
+                'message' => 'Wrong email or password',
+                'status' => 422
+            ], 422);
+        }
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Wrong email or password',
+                'status' => 422
+            ], 422);
         }
         if(Hash::check($request->password,$user->password)){
             $http = new Client;
@@ -71,7 +80,6 @@ class ApiController extends Controller
                     'scope' => '',
                 ],
             ]);
-
             return response(['data'=>json_decode((string) $response->getBody(), true),]);
         }
     }

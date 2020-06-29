@@ -22,3 +22,4 @@ Route::post('/login','App\ApiController@login');
 Route::apiResource('/category','App\CategoryController');
 Route::apiResource('/subcategory','App\SubcategoryController');
 Route::apiResource('/all-product','App\ProductController');
+Route::post('/save_livraison','App\CheckoutController@save_livraison_info');
